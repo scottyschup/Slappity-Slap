@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/JavaScript" language="JavaScript" src="game.js">
+		</script>
+		<title>Slappity Slap!</title>
+
+
+	</head>
+	<body>
+		<div id='preloader'>
+			<img scr='img/1square.png' width="1" height="1"  />
+			<img scr='img/hand_back.png' width="1" height="1"  />
+			<img scr='img/hand_slap.png' width="1" height="1"  />
+			<img scr='img/hit.png' width="1" height="1"  />
+			<img scr='img/miss.png' width="1" height="1"  />
+			<img scr='img/strike.png' width="1" height="1"  />
+		</div>
+		<div id="body">
+			<div id="top">
+				<div id='basics' class='top'>
+					<h2>Slappity Slap!</h2>
+					<button type=button id='start' class='button' onclick="start();">Start!</button>
+					<button type=button id='reset' class='button' onclick="location.reload()">Play Again</button>
+					<p id="text">Click "Start!" when ready.<br />3 strikes or 10 misses = GAME OVER :(</p>
+				</div>
+				<div id='scoreboard' class='top'>
+					<p id='score' class='sb'>0 points</p>
+					<p id='strikes' class='sb'>0 strikes</p>
+					<p id='misses' class='sb'>0 misses</p>
+				</div>
+				<noscript>Sorry, your browser does not support JavaScript, the language in which this game is written :(</noscript>
+			</div>
+			<div id="gameBox">
+				<div class=row id='row1'>
+					<div id="a1" class="divCell" onclick="slap(event);">
+						<div id="a1inner" class="inner"></div>
+					</div>
+					<div id="a2" class="divCell" onclick="slap(event);">
+						<div id="a2inner" class="inner"></div>
+					</div>
+					<div id="a3" class="divCell" onclick="slap(event);">
+						<div id="a3inner" class="inner"></div>
+					</div>
+				</div>
+				<div id='gameOver' class='row'><h1>GAME OVER!</h1></div>
+				<div class=row id='row2'>
+					<div id="b1" class="divCell" onclick="slap(event);">
+						<div id="b1inner" class="inner"></div>
+					</div>
+					<div id="b2" class="divCell" onclick="slap(event);">
+						<div id="b2inner" class="inner"></div>
+					</div>
+					<div id="b3" class="divCell" onclick="slap(event);">
+						<div id="b3inner" class="inner"></div>
+					</div>
+				</div>
+				<div class=row id='row3'>
+					<div id="c1" class="divCell" onclick="slap(event);">
+						<div id="c1inner" class="inner"></div>
+					</div>
+					<div id="c2" class="divCell" onclick="slap(event);">
+						<div id="c2inner" class="inner"></div>
+					</div>
+					<div id="c3" class="divCell" onclick="slap(event);">
+						<div id="c3inner" class="inner"></div>
+					</div>
+				</div>
+			</div>
+			<div id='testArea'></div>
+		</div>
+	</body>
+</html>

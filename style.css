@@ -1,0 +1,121 @@
+/* CSS for whack-a-friend.com */
+
+@media screen {
+
+div#preloader {
+	position: absolute;
+	left: -9999px;
+	top:  -9999px;
+}
+
+div#preloader img {
+	display: block;
+}
+
+body {
+	position: absolute;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: #999;
+	cursor: block;
+	-webkit-user-select: none;  
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+div {
+	background-repeat: no-repeat;
+}
+
+h1 {
+	width: 225px;
+	margin: 0 auto 0 auto;
+	font-size: xx-large;
+}
+
+h2 {
+	margin: 0;
+	font-size: x-large;
+}
+
+#basics {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+#body {
+	position: relative;
+	max-width: 304px;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 450px;
+	background-color: #FFF;
+	padding: 0 20px 0 20px;
+}
+
+.top {
+	float: left;
+}
+
+#top {
+	position: relative;	
+	max-width: 304px;
+	height: 130px;
+	margin: 0;
+}
+
+#scoreboard {
+	position: absolute;
+	right: 0px;
+	height: 140px;
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: larger;
+	float: right;
+}
+
+p.sb {
+	margin: 0 0 0 0;
+}
+
+#gameBox {
+	width: 300px;
+	height: 300px;
+	border: 2px solid black;
+}
+
+#gameOver {
+	max-width: 360px;
+	height: 100px;
+	margin: 0px auto 0px auto;
+	color: red;
+	font-size: 160%;
+	font-family: sans-serif;
+	display: none;
+}
+
+.divCell {
+	width: 100px;
+	height: 100px;
+	padding: 0;
+	margin: 0;
+	border: 0px solid #aaaaaa;
+	float:left;
+}
+
+.row {
+	clear: both;
+}
+
+#hand {
+	padding: 0;
+	margin: 0;
+}
+
+#reset {
+	display: none;
+}
+}
