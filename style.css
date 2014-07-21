@@ -2,128 +2,137 @@
 
 @media screen {
 
-div#preloader {
-	position: absolute;
-	left: -9999px;
-	top:  -9999px;
-}
+	div#preloader {
+		position: absolute;
+		left: -9999px;
+		top:  -9999px;
+	}
 
-div#preloader img {
-	display: block;
-}
+	div#preloader img {
+		display: block;
+	}
 
-body {
-	position: absolute;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	background-color: #999;
-	cursor: block;
-	-webkit-user-select: none;  
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
+	div#imgSetDiv {
+		z-index: 100;
+		width: 200px;
+		margin: 25px auto auto auto;
+		display: none;
+		background-color: #FFF;
+		padding: 10px;
+	}
 
-div {
-	background-repeat: no-repeat;
-}
+	body {
+		position: absolute;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		background-color: #999;
+		cursor: block;
+		-webkit-user-select: none;  
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
-h1 {
-	margin: 0;
-	font-size: xx-large;
-}
+	div {
+		background-repeat: no-repeat;
+	}
 
-h2 {
-	margin: 0;
-	font-size: x-large;
-}
+	h1 {
+		margin: 0;
+		font-size: xx-large;
+	}
 
-#message2 {
-	color: #33CC00;
-}
+	h2 {
+		margin: 0;
+		font-size: x-large;
+	}
 
-#basics {
-	margin-top: 10px;
-	margin-left: 5px;
-}
+	#message2 {
+		color: #33CC00;
+	}
 
-#body {
-	position: relative;
-	max-width: 304px;
-	margin-top: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	height: 500px;
-	background-color: #FFF;
-	padding: 0 20px 0 20px;
-}
+	#basics {
+		margin-top: 10px;
+		margin-left: 5px;
+	}
 
-.top {
-	float: left;
-}
+	#body {
+		position: relative;
+		max-width: 304px;
+		margin-top: 10px;
+		margin-left: auto;
+		margin-right: auto;
+		height: 500px;
+		background-color: #FFF;
+		padding: 0 20px 0 20px;
+	}
 
-#top {
-	position: relative;	
-	max-width: 304px;
-	height: 170px;
-	margin: 0;
-}
+	.top {
+		float: left;
+	}
 
-p#text {
-	margin: 30 0 0 0;
-}
+	#top {
+		position: relative;	
+		max-width: 304px;
+		height: 170px;
+		margin: 0;
+	}
 
-#scoreboard {
-	position: absolute;
-	right: 0px;
-	height: 150px;
-	width: 100px;
-	margin-top: 10px;
-	margin-left: 10px;
-	font-size: larger;
-	float: right;
-}
+	p#text {
+		margin: 30 0 0 0;
+	}
 
-p.sb {
-	margin: 0 0 0 0;
-}
+	#scoreboard {
+		position: absolute;
+		right: 0px;
+		height: 150px;
+		width: 100px;
+		margin-top: 10px;
+		margin-left: 10px;
+		font-size: larger;
+		float: right;
+	}
 
-#gameBox {
-	width: 300px;
-	height: 300px;
-	border: 2px solid black;
-}
+	p.sb {
+		margin: 0 0 0 0;
+	}
 
-#gameOver {
-	max-width: 200px;
-	height: 100px;
-	margin: 0px auto 0px auto;
-	color: red;
-	font-size: 160%;
-	font-family: sans-serif;
-	display: none;
-}
+	#gameBox {
+		width: 300px;
+		height: 300px;
+		border: 2px solid black;
+	}
 
-.divCell {
-	width: 100px;
-	height: 100px;
-	padding: 0;
-	margin: 0;
-	border: 0px solid #aaaaaa;
-	float:left;
-}
+	#gameOver {
+		max-width: 210px;
+		height: 100px;
+		margin: 0px auto 0px auto;
+		color: red;
+		font-size: 160%;
+		font-family: sans-serif;
+		display: none;
+	}
 
-.row {
-	clear: both;
-}
+	.divCell {
+		width: 100px;
+		height: 100px;
+		padding: 0;
+		margin: 0;
+		border: 0px solid #aaaaaa;
+		float:left;
+	}
 
-#hand {
-	padding: 0;
-	margin: 0;
-}
+	.row {
+		clear: both;
+	}
 
-#reset {
-	display: none;
-}
+	#hand {
+		padding: 0;
+		margin: 0;
+	}
+
+	#reset {
+		display: none;
+	}
 }

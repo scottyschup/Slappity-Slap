@@ -2,15 +2,16 @@
 totalPoints = 0;
 lastIndex = 41;
 totalMisses = 0;
-msecs = [2200, 3300, 5500, 7700, 9900]
+msecs = [2200, 3300, 6600, 9900, 13200];
+images = [0, 1, 2, 3, 4];
 progress = 1;
-images = ['scott', 'kevin', 'heather', 'quigs'];
 points = [10, 25, 50, 100, 250];
 hitStatus = {}; 
 thisCell = {};
 timer = [];
 level = 1;
 handPos = 0;
+imgSets = {'testImgs': 'Orignal Test Images', 'repubs': 'Republicans', 'dems': 'Democrats'};
 
 Object.prototype.getKey = function(value) {
   for(var key in this){
@@ -32,7 +33,7 @@ var followCursor = (function() {
 	hand.style.margin = '0';
 	hand.style.padding = '40px';
 	hand.style.border = '0';
-	hand.style.backgroundImage = "url('img/hand_back.png')";
+	hand.style.backgroundImage = "url('img/hand/back.png')";
 	hand.id = 'hand'
 	return {
 		init: function() {
@@ -46,6 +47,29 @@ var followCursor = (function() {
 		}
 	};
 }());
+
+function promptImgSet() {
+	for (var key in imgSets) {
+		if (key != 'getKey') {
+			var opt = new Option(imgSets[key], key);
+			document.aForm.imgSelect.appendChild(opt);
+			for (i = 0; i < 5; i++) {
+				var img = document.createElement('img');
+				img.src = 'img/' + key + '/' + i + '.png';
+				img.height = '1px';
+				img.width = '1px';
+				document.getElementById('preloader').appendChild(img);
+			}		
+		}
+	}
+	setTimeout(function() {document.getElementById('imgSetDiv').style.display = 'block'}, 500);
+}
+
+function selectImgSet() {
+	var a = document.getElementById('imgSelect');
+	imgSet = a.options[a.selectedIndex].value;
+	document.getElementById('imgSetDiv').style.display = 'none';
+}
 
 function start() {
 	divCells = document.getElementsByClassName("divCell");
@@ -64,9 +88,10 @@ function start() {
 	document.getElementById('start').style.display = 'none';
 	document.getElementById('text').innerHTML = 'Happy Slapping!';
 	imageAppear(0);
-	timer[timer.length] = setTimeout(function() {imageAppear(1)}, 5000);
-	timer[timer.length] = setTimeout(function() {imageAppear(2)}, 9000);
-	timer[timer.length] = setTimeout(function() {imageAppear(3)}, 15000);
+	timer[timer.length] = setTimeout(function() {imageAppear(1)}, 3300);
+	timer[timer.length] = setTimeout(function() {imageAppear(2)}, 6600);
+	timer[timer.length] = setTimeout(function() {imageAppear(3)}, 9900);
+	timer[timer.length] = setTimeout(function() {imageAppear(4)}, 13200);
 }
 
 function isEmpty(i) {
@@ -87,7 +112,7 @@ function imageAppear(n) {
  	thisCell[n] = cells[index];
  	cellStatus[cells[index]] = 1;
 
- 	document.getElementById(thisCell[n]).style.backgroundImage = "url('img/" + images[n] + ".png')";
+ 	document.getElementById(thisCell[n]).style.backgroundImage = "url('img/" + imgSet + '/' + n + ".png')";
  	timer[timer.length] = setTimeout(function() {
  		if (hitStatus[n] == 0) {
  			miss(thisCell[n]); 
@@ -105,10 +130,10 @@ function imageAppear(n) {
 function slap(ev) {
 	ev.preventDefault();
 	if (handPos == 0) {
-		document.getElementById('hand').style.backgroundImage = 'url("img/hand_slap.png")';
+		document.getElementById('hand').style.backgroundImage = 'url("img/hand/slap.png")';
 		handPos = 1;
 	} else {
-		document.getElementById('hand').style.backgroundImage = 'url("img/hand_back.png")';
+		document.getElementById('hand').style.backgroundImage = 'url("img/hand/back.png")';
 		handPos = 0;
 	}
 	
@@ -195,5 +220,4 @@ function gameOver() {
 	document.getElementById('hand').style.display = 'none';
 	document.body.style.cursor = 'default';
 	document.getElementById('reset').style.display = 'block';
-
 }

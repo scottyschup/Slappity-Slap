@@ -10,14 +10,24 @@
 
 
 	</head>
-	<body>
+	<body onload="promptImgSet();">
+
+		<div id='imgSetDiv'>
+			<form name='aForm'>
+				<label>Who would you like to slap?<br /></label>
+				<select id="imgSelect">
+					<option value=''>Choose one:</option>
+				</select>
+				<br />
+				<input type='button' value='Go' onclick='selectImgSet();' />
+			</form>
+		</div>
+
 		<div id='preloader'>
-			<img scr='img/1square.png' width="1" height="1"  />
-			<img scr='img/hand_back.png' width="1" height="1"  />
-			<img scr='img/hand_slap.png' width="1" height="1"  />
-			<img scr='img/hit.png' width="1" height="1"  />
-			<img scr='img/miss.png' width="1" height="1"  />
-			<img scr='img/strike.png' width="1" height="1"  />
+			<img src='img/hand/back.png' width="1" height="1"  />
+			<img src='img/hand/slap.png' width="1" height="1"  />
+			<img src='img/hit.png' width="1" height="1"  />
+			<img src='img/miss.png' width="1" height="1"  />
 		</div>
 		<div id="body">
 			<div id="top">
@@ -25,7 +35,7 @@
 					<h1>Slappity Slap!</h1>
 					<button type=button id='start' class='button' onclick="start();">Start!</button>
 					<button type=button id='reset' class='button' onclick="location.reload();">Play Again</button>
-					<p id='text'>10 misses = GAME OVER :( But every 1,000 points = level up and misses reset to 0!</p>
+					<p id='text'>10 misses = GAME OVER :( But every 1,000 points = level up and your misses count reset to 0!</p>
 					<h2 id='message'></h2>
 					<h2 id='message2'></h2>
 				</div>
