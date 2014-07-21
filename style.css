@@ -30,14 +30,17 @@ div {
 }
 
 h1 {
-	width: 225px;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	font-size: xx-large;
 }
 
 h2 {
 	margin: 0;
 	font-size: x-large;
+}
+
+#message2 {
+	color: #33CC00;
 }
 
 #basics {
@@ -51,7 +54,7 @@ h2 {
 	margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
-	height: 450px;
+	height: 500px;
 	background-color: #FFF;
 	padding: 0 20px 0 20px;
 }
@@ -63,14 +66,19 @@ h2 {
 #top {
 	position: relative;	
 	max-width: 304px;
-	height: 130px;
+	height: 170px;
 	margin: 0;
+}
+
+p#text {
+	margin: 30 0 0 0;
 }
 
 #scoreboard {
 	position: absolute;
 	right: 0px;
-	height: 140px;
+	height: 150px;
+	width: 100px;
 	margin-top: 10px;
 	margin-left: 10px;
 	font-size: larger;
@@ -88,7 +96,7 @@ p.sb {
 }
 
 #gameOver {
-	max-width: 360px;
+	max-width: 200px;
 	height: 100px;
 	margin: 0px auto 0px auto;
 	color: red;
