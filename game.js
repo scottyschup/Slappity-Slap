@@ -1,10 +1,15 @@
-//JavaScript functions for whack-a-friend
+// JavaScript functions for whack-a-friend
 totalPoints = 0;
 lastIndex = 41;
 totalStrikes = 0;
 totalMisses = 0;
-msecs = 2000;
+msecs = [2000, 3300, 5500, 7700, 9900]
 progress = 1;
+images = ['scott', 'kevin', 'heather', 'quigs'];
+points = [10, 25, 50, 100, 250];
+thisTarget = {}; 
+thisCell = {};
+timer = [];
 
 function getMouseCoords(e) {
 	var e = e || window.event;
@@ -33,79 +38,117 @@ var followCursor = (function() {
 }());
 
 function start() {
+	divCells = document.getElementsByClassName("divCell");
+	cells = [];
+	for (i = 0; i < divCells.length; i++) {
+		cells[i] = divCells[i].id;
+	}
+	
+	cellStatus = {};
+	for (i = 0; i < cells.length; i++) {
+		cellStatus[cells[i]] = 0;
+	}
 	followCursor.init();
 	document.body.onmousemove = followCursor.run;
 	document.body.style.cursor = 'crosshair';
 	document.getElementById('start').style.display = 'none';
 	document.getElementById('text').innerHTML = 'Happy Slapping!';
-	imageAppear();
+	imageAppear(0);
+	timer[timer.length] = setTimeout(function() {imageAppear(1)}, 5000);
+	timer[timer.length] = setTimeout(function() {imageAppear(2)}, 9000);
+	timer[timer.length] = setTimeout(function() {imageAppear(3)}, 15000);
 }
 
-function imageAppear() {
-	thisTarget = 'miss';
-	var cells = document.getElementsByClassName("divCell");
-	var index = Math.floor(Math.random() * cells.length);
+function isEmpty(i) {
+	while (cellStatus[cells[i]] != 0) {
+		if (i < cells.length - 1) {
+			i += 1;
+		} else {
+			i = 0;
+		}
+	}
+	return i;
+}
 
- 	if (index == lastIndex) {
- 		if (index < cells.length - 1) {
- 			index += 1;
- 		} else {
- 			index -= 1;
+function imageAppear(n) {
+	thisTarget[n] = 'miss';
+	var ind = Math.floor(Math.random() * cells.length);
+	var index = isEmpty(ind);
+ 	thisCell[n] = cells[index];
+ 	cellStatus[cells[index]] = 1;
+
+ 	document.getElementById(thisCell[n]).style.backgroundImage = "url('img/" + images[n] + ".png')";
+ 	timer[timer.length] = setTimeout(function() {
+ 		if (thisTarget[n] == 'miss') {
+ 			miss(thisCell[n]); 
  		}
- 	}
- 	thisCell = cells[index];
- 	lastIndex = index;
- 	document.getElementById(thisCell.id).style.backgroundImage = "url('img/1square.png')";
- 	setTimeout(function() {
- 		if (thisTarget == 'miss') {
- 			miss(thisCell);
- 		} else if (thisTarget == 'strike') {
- 			document.getElementById(thisCell.id).style.backgroundImage = "url('')";
- 		}
- 	}, msecs - (250 * (Math.log(progress))) - 50);
+ 	}, msecs[0] - (250 * (Math.log(progress))));
 
  	if (totalStrikes < 3 && totalMisses < 10) {
- 		setTimeout(function() {
- 			imageAppear()}, msecs - (250 * (Math.log(progress))));
+ 		timer[timer.length] = setTimeout(function() {
+ 			imageAppear(n)}, msecs[n] - (250 * (Math.log(progress))));
 	} else {
 		gameOver();
 	}
+}
+
+Object.prototype.getKey = function(value) {
+  for(var key in this){
+    if(this[key] == value){
+      return key;
+    }
+  }
+  return null;
 }
 
 function slap(ev) {
 	ev.preventDefault();
 	document.getElementById('hand').style.backgroundImage = 'url("img/hand_slap.png")';
-	setTimeout(function() {document.getElementById('hand').style.backgroundImage = 'url("img/hand_back.png")'}, 250);
-	if (thisTarget != 'hit') {
-		if (document.getElementById(ev.target.id) == thisCell) {
-			addPoints(ev.target);
-		} else {
-			strikes(ev.target);
-		}
+	setTimeout(function() {document.getElementById('hand').style.backgroundImage = 'url("img/hand_back.png")'}, 200);
+
+	if (cellStatus[ev.target.id] == 1) {
+		n = thisCell.getKey(ev.target.id)
+		addPoints(ev.target.id, n);
+	} else {
+		strikes(ev.target.id);
 	}
+
 }
 
-function addPoints(hitCell) {
-	thisTarget = 'hit';
-	totalPoints += 10;
-	progress += 1;
+function addPoints(hitCell, n) {
+	thisTarget[n] = 'hit';
+	totalPoints += points[n];
+
+	if (progress <= 30) {
+		progress += 3;
+	} else if (progress <= 75) {
+		progress += 2;
+	} else if (progress >= 135) {
+		progress += 0.5;
+	} else {
+		progress += 1;
+	}
+
 	document.getElementById("score").innerHTML = totalPoints + ' points';
-	document.getElementById(hitCell.id).style.backgroundImage = "url('img/hit.png')";
-	setTimeout(function() {
-		document.getElementById(hitCell.id).style.backgroundImage = "url('')";
+	document.getElementById(hitCell).style.backgroundImage = "url('img/hit.png')";
+	cellStatus[hitCell] = 2;
+	timer[timer.length] = setTimeout(function() {
+		document.getElementById(hitCell).style.backgroundImage = "url('')";
+		cellStatus[hitCell] = 0;
 	}, 500);
 }
 
 function strikes(strikeCell) {
-	thisTarget = 'strike';
 	totalStrikes += 1;
 	document.getElementById("strikes").innerHTML = totalStrikes + ' strikes';
+	cellStatus[hitCell] = 2;
 	if (totalStrikes == 3) {
 		gameOver();
 	} else {
-		document.getElementById(strikeCell.id).style.backgroundImage = "url('img/strike.png')";
-		setTimeout(function() {
-			document.getElementById(strikeCell.id).style.backgroundImage = "url('')";
+		document.getElementById(strikeCell).style.backgroundImage = "url('img/strike.png')";
+		timer[timer.length] = setTimeout(function() {
+			document.getElementById(strikeCell).style.backgroundImage = "url('')";
+			cellStatus[hitCell] = 0;
 		}, 500);
 	}
 }
@@ -116,9 +159,11 @@ function miss(missCell) {
 		gameOver();
 	} else {
 		document.getElementById('misses').innerHTML = totalMisses + ' misses';
-		document.getElementById(missCell.id).style.backgroundImage = "url('img/miss.png')";
-		setTimeout(function() {
-			document.getElementById(missCell.id).style.backgroundImage = "url('')";
+		document.getElementById(missCell).style.backgroundImage = "url('img/miss.png')";
+		cellStatus[missCell] = 2;
+		timer[timer.length] = setTimeout(function() {
+			document.getElementById(missCell).style.backgroundImage = "url('')";
+			cellStatus[missCell] = 0;
 		}, 500);
 	}
 }
@@ -127,7 +172,12 @@ function gameOver() {
 	document.getElementById('row2').style.display = 'none';
 	document.getElementById('gameOver').style.display = 'block';
 	document.getElementById('hand').style.display = 'none';
-	document.getElementById(thisCell.id).style.backgroundImage = "url('')";
+	for (var i = 0; i < thisCell.length; i++) {
+		document.getElementById(thisCell[i]).style.backgroundImage = "url('')";
+	}
 	document.body.style.cursor = 'default';
 	document.getElementById('reset').style.display = 'block';
+	for (i = timer.length - 1; i > 0; i--) {
+		clearTimeout(timer[i]);
+	}
 }
