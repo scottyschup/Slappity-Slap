@@ -1,15 +1,25 @@
 // JavaScript functions for whack-a-friend
 totalPoints = 0;
 lastIndex = 41;
-totalStrikes = 0;
 totalMisses = 0;
-msecs = [2000, 3300, 5500, 7700, 9900]
+msecs = [2200, 3300, 5500, 7700, 9900]
 progress = 1;
 images = ['scott', 'kevin', 'heather', 'quigs'];
 points = [10, 25, 50, 100, 250];
-thisTarget = {}; 
+hitStatus = {}; 
 thisCell = {};
 timer = [];
+level = 1;
+handPos = 0;
+
+Object.prototype.getKey = function(value) {
+  for(var key in this){
+    if(this[key] == value){
+      return key;
+    }
+  }
+  return null;
+}
 
 function getMouseCoords(e) {
 	var e = e || window.event;
@@ -71,7 +81,7 @@ function isEmpty(i) {
 }
 
 function imageAppear(n) {
-	thisTarget[n] = 'miss';
+	hitStatus[n] = 0; // 0 for 'miss', 1 for 'hit'
 	var ind = Math.floor(Math.random() * cells.length);
 	var index = isEmpty(ind);
  	thisCell[n] = cells[index];
@@ -79,12 +89,12 @@ function imageAppear(n) {
 
  	document.getElementById(thisCell[n]).style.backgroundImage = "url('img/" + images[n] + ".png')";
  	timer[timer.length] = setTimeout(function() {
- 		if (thisTarget[n] == 'miss') {
+ 		if (hitStatus[n] == 0) {
  			miss(thisCell[n]); 
  		}
  	}, msecs[0] - (250 * (Math.log(progress))));
 
- 	if (totalStrikes < 3 && totalMisses < 10) {
+ 	if (totalMisses < 10) {
  		timer[timer.length] = setTimeout(function() {
  			imageAppear(n)}, msecs[n] - (250 * (Math.log(progress))));
 	} else {
@@ -92,44 +102,37 @@ function imageAppear(n) {
 	}
 }
 
-Object.prototype.getKey = function(value) {
-  for(var key in this){
-    if(this[key] == value){
-      return key;
-    }
-  }
-  return null;
-}
-
 function slap(ev) {
 	ev.preventDefault();
-	document.getElementById('hand').style.backgroundImage = 'url("img/hand_slap.png")';
-	setTimeout(function() {document.getElementById('hand').style.backgroundImage = 'url("img/hand_back.png")'}, 200);
-
+	if (handPos == 0) {
+		document.getElementById('hand').style.backgroundImage = 'url("img/hand_slap.png")';
+		handPos = 1;
+	} else {
+		document.getElementById('hand').style.backgroundImage = 'url("img/hand_back.png")';
+		handPos = 0;
+	}
+	
 	if (cellStatus[ev.target.id] == 1) {
 		n = thisCell.getKey(ev.target.id)
 		addPoints(ev.target.id, n);
-	} else {
-		strikes(ev.target.id);
-	}
-
+	} 
 }
 
 function addPoints(hitCell, n) {
-	thisTarget[n] = 'hit';
+	hitStatus[n] = 1;
 	totalPoints += points[n];
-
-	if (progress <= 30) {
-		progress += 3;
-	} else if (progress <= 75) {
-		progress += 2;
-	} else if (progress >= 135) {
-		progress += 0.5;
-	} else {
-		progress += 1;
+	if (Math.floor(totalPoints / 1000) == level) {
+		levelUp();
 	}
 
-	document.getElementById("score").innerHTML = totalPoints + ' points';
+	if (progress <= 100) {
+		progress += 1;
+	} else {
+		progress += 0.5;
+	}
+
+	document.getElementById('score').innerHTML = totalPoints + ' points';
+	document.getElementById('message').innerHTML = '+' + points[n] + ' points';
 	document.getElementById(hitCell).style.backgroundImage = "url('img/hit.png')";
 	cellStatus[hitCell] = 2;
 	timer[timer.length] = setTimeout(function() {
@@ -138,24 +141,34 @@ function addPoints(hitCell, n) {
 	}, 500);
 }
 
-function strikes(strikeCell) {
-	totalStrikes += 1;
-	document.getElementById("strikes").innerHTML = totalStrikes + ' strikes';
-	cellStatus[hitCell] = 2;
-	if (totalStrikes == 3) {
-		gameOver();
-	} else {
-		document.getElementById(strikeCell).style.backgroundImage = "url('img/strike.png')";
-		timer[timer.length] = setTimeout(function() {
-			document.getElementById(strikeCell).style.backgroundImage = "url('')";
-			cellStatus[hitCell] = 0;
-		}, 500);
-	}
+function levelUp() {
+	level += 1;
+	totalMisses = 0;
+	document.getElementById('level').innerHTML = "Level " + level;
+	document.getElementById('misses').innerHTML = totalMisses + " misses";
+	document.getElementById('message2').innerHTML = "Level Up!";
+	setTimeout(function() {
+		document.getElementById('message2').innerHTML = '';
+	}, 3000);
 }
+// function strikes(strikeCell) {
+// 	totalStrikes += 1;
+// 	document.getElementById("strikes").innerHTML = totalStrikes + ' strikes';
+// 	cellStatus[hitCell] = 2;
+// 	if (totalStrikes == 3) {
+// 		gameOver();
+// 	} else {
+// 		document.getElementById(strikeCell).style.backgroundImage = "url('img/strike.png')";
+// 		timer[timer.length] = setTimeout(function() {
+// 			document.getElementById(strikeCell).style.backgroundImage = "url('')";
+// 			cellStatus[hitCell] = 0;
+// 		}, 500);
+// 	}
+// }
 
 function miss(missCell) {
 	totalMisses += 1;
-	if (totalMisses == 11 || totalStrikes == 3) {
+	if (totalMisses == 11) {
 		gameOver();
 	} else {
 		document.getElementById('misses').innerHTML = totalMisses + ' misses';
@@ -169,15 +182,18 @@ function miss(missCell) {
 }
 
 function gameOver() {
-	document.getElementById('row2').style.display = 'none';
-	document.getElementById('gameOver').style.display = 'block';
-	document.getElementById('hand').style.display = 'none';
-	for (var i = 0; i < thisCell.length; i++) {
-		document.getElementById(thisCell[i]).style.backgroundImage = "url('')";
-	}
-	document.body.style.cursor = 'default';
-	document.getElementById('reset').style.display = 'block';
 	for (i = timer.length - 1; i > 0; i--) {
 		clearTimeout(timer[i]);
 	}
+	for (i = 0; i < cells.length; i++) {
+		document.getElementById(cells[i]).style.backgroundImage = "url('')";
+		cellStatus[cells[i]] = 0;
+	}
+	document.getElementById('row2').style.display = 'none';
+	document.getElementById('gameOver').style.display = 'block';
+	document.getElementById('text').style.display = 'none';
+	document.getElementById('hand').style.display = 'none';
+	document.body.style.cursor = 'default';
+	document.getElementById('reset').style.display = 'block';
+
 }
